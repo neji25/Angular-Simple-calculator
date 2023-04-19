@@ -29,13 +29,26 @@ export class HeaderComponent {
 		this.modalService.open(content, { centered: true });
 	}
 
-  onSubmit(form: NgForm) {
-   form = form.control.value
-   console.log(form);
-   this.dataService.postUser(form)
+  // Регистрация
+  onSubmitRegistration(form: NgForm) {
+   const data = {
+    email: form.control.get('email')?.value,
+    password: form.control.get('password')?.value
+   }
+
+   if(data.password !== form.control.get("rep_password")?.value) {
+      return console.log('Пароли не совпадают')
+   }
+   
+   this.dataService.postUser(data)
    .subscribe(response => {
     console.log("Ответ от сервера: " + response);
    })
+  }
+
+  // Авторизация
+  onSubmitAuthorisation(form: NgForm) {
+
   }
 
 }

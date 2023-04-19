@@ -9,23 +9,23 @@
         <a class="nav-link" href="#">Blog</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" (click)="openVerticallyCentered(content)">Register</a>
+        <a class="nav-link" href="#" (click)="openVerticallyCentered(registration)">Register</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Log In</a>
+        <a class="nav-link" href="#" (click)="openVerticallyCentered(authorisation)">Log In</a>
       </li>
     </ul>
   </div>
 </nav>
 
 <!-- Модальное окно (Регистрация) -->
-<ng-template #content let-modal>
+<ng-template #registration let-modal>
 	<div class="modal-header">
 		<h4 class="modal-title">Регистрация</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-		<form #FormReg="ngForm" (ngSubmit)="onSubmit(FormReg)">
+		<form #FormReg="ngForm" (ngSubmit)="onSubmitRegistration(FormReg)">
       <div class="form-group">
         <label for="inputEmail">Email</label>
         <input type="email" name="email" class="form-control" ngModel id="inputEmail" placeholder="Введите ваш email" required>
@@ -34,7 +34,32 @@
         <label for="inputPassword">Пароль</label>
         <input type="password" name="password" class="form-control" ngModel id="inputPassword" placeholder="Введите пароль" required>
       </div>
+      <div class="form-group mt-3">
+        <label for="inputPassword">Повторите пароль</label>
+        <input type="password" name="rep_password" class="form-control" ngModel id="inputPassword" placeholder="Повторите пароль" required>
+      </div>
       <button type="submit" class="btn btn-primary mt-4" [disabled]="FormReg.invalid">Зарегистрироваться</button>
+    </form>
+	</div>
+</ng-template>
+
+<!-- Модальное окно (Авторизация) -->
+<ng-template #authorisation let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Авторизация</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form #FormReg="ngForm" (ngSubmit)="onSubmitAuthorisation(FormReg)">
+      <div class="form-group">
+        <label for="inputEmail">Email</label>
+        <input type="email" name="email" class="form-control" ngModel id="inputEmail" placeholder="Введите ваш email" required>
+      </div>
+      <div class="form-group mt-3">
+        <label for="inputPassword">Пароль</label>
+        <input type="password" name="password" class="form-control" ngModel id="inputPassword" placeholder="Введите пароль" required>
+      </div>
+      <button type="submit" class="btn btn-primary mt-4" [disabled]="FormReg.invalid">Войти</button>
     </form>
 	</div>
 </ng-template>
