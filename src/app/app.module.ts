@@ -7,19 +7,23 @@ import { HeaderComponent } from './components/header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { DataServiceService } from './services/data-service.service';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { DashboardComponent } from './components/dashboard/dashboard.component'
+import { RoutesModule } from './routes/routes.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     CalculatorComponent,
     HeaderComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
     NgbModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RoutesModule
   ],
   providers: [DataServiceService],
   bootstrap: [AppComponent]
