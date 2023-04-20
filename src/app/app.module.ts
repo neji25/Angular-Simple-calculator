@@ -6,10 +6,16 @@ import {CalculatorComponent} from "./components/calculator/calculator.component"
 import { HeaderComponent } from './components/header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { DataServiceService } from './services/data-service.service';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { DashboardComponent } from './components/dashboard/dashboard.component'
 import { RoutesModule } from './routes/routes.module';
+import {AuthService} from "./services/auth.service";
+import {TokenInterceptorService} from "./services/token-interceptor.service";
+import {JwtModule} from "@auth0/angular-jwt";
+
+export function tokenGetter() {
+  return localStorage.getItem('token')
+}
 
 @NgModule({
   declarations: [
@@ -20,12 +26,26 @@ import { RoutesModule } from './routes/routes.module';
   ],
   imports: [
     BrowserModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        allowedDomains: ['localhost:3000'],
+        disallowedRoutes: ['localhost:3000/login']
+      }
+    }),
     NgbModule,
     FormsModule,
     HttpClientModule,
     RoutesModule
   ],
-  providers: [DataServiceService],
+  providers: [
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

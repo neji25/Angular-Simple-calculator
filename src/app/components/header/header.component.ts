@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
-import { DataServiceService } from 'src/app/services/data-service.service';
+import {AuthService} from "../../services/auth.service";
 
 interface User {
   email: String
@@ -19,10 +19,10 @@ export class HeaderComponent {
     email: '',
     password: ''
   }
-  
+
   constructor(
     private modalService: NgbModal,
-    private dataService: DataServiceService
+    private auth: AuthService
     ) {}
 
   openVerticallyCentered(content: any) {
@@ -39,8 +39,8 @@ export class HeaderComponent {
    if(data.password !== form.control.get("rep_password")?.value) {
       return console.log('Пароли не совпадают')
    }
-   
-   this.dataService.postUser(data)
+
+   this.auth.signIn(data)
    .subscribe(response => {
     console.log("Ответ от сервера: " + response);
    })
