@@ -9,7 +9,8 @@ import {HttpClient} from "@angular/common/http";
 export class AuthService {
   private jwtHelper: JwtHelperService = new JwtHelperService()
 
-  private apiUrl = "http://localhost:3000/register"
+  private apiUrlSignUp = "http://localhost:3000/register"
+  private apiUrlSignIn = "http://localhost:3000/login"
 
   constructor(private http: HttpClient) {
   }
@@ -28,7 +29,14 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token)
   }
 
-  public signIn(data: any) {
-    return this.http.post(this.apiUrl, data)
+  public signUp(data: any) {
+    return this.http.post(this.apiUrlSignUp, data)
+  }
+
+  public signIn(data:any) {
+    this.http.post(this.apiUrlSignIn, data).subscribe(user => {
+      console.log(user)
+
+    })
   }
 }

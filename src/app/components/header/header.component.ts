@@ -40,7 +40,7 @@ export class HeaderComponent {
       return console.log('Пароли не совпадают')
    }
 
-   this.auth.signIn(data)
+   this.auth.signUp(data)
    .subscribe(response => {
     console.log("Ответ от сервера: " + response);
    })
@@ -48,7 +48,10 @@ export class HeaderComponent {
 
   // Авторизация
   onSubmitAuthorisation(form: NgForm) {
-
+    const data = {
+      email: form.control.get('email')?.value,
+      password: form.control.get('password')?.value
+    }
+    this.auth.signIn(data)
   }
-
 }
