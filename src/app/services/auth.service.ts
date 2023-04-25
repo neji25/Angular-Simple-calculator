@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { AuthToken } from "../auth-token";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -20,8 +19,8 @@ export class AuthService {
     return token ? token : ''
   }
 
-  public setToken(token: AuthToken):void {
-    localStorage.setItem('token', token.access_token)
+  public setToken(token: string):void {
+    localStorage.setItem('token', token)
   }
 
   public isAuthenticated():boolean {
@@ -30,13 +29,15 @@ export class AuthService {
   }
 
   public signUp(data: any) {
-    return this.http.post(this.apiUrlSignUp, data)
+      return this.http.post(this.apiUrlSignUp, data)
   }
 
   public signIn(data:any) {
-    this.http.post(this.apiUrlSignIn, data).subscribe(user => {
-      console.log(user)
+    return this.http.post(this.apiUrlSignIn, data)
+  }
 
-    })
+  public logout() {
+    localStorage.removeItem("token")
+    return this.isAuthenticated()
   }
 }

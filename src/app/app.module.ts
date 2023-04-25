@@ -12,6 +12,7 @@ import { RoutesModule } from './routes/routes.module';
 import {AuthService} from "./services/auth.service";
 import {TokenInterceptorService} from "./services/token-interceptor.service";
 import {JwtModule} from "@auth0/angular-jwt";
+import { AllPostsComponent } from './components/blog/all-posts/all-posts.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -23,6 +24,7 @@ export function tokenGetter() {
     CalculatorComponent,
     HeaderComponent,
     DashboardComponent,
+    AllPostsComponent,
   ],
   imports: [
     BrowserModule,

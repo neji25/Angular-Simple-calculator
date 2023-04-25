@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import {AuthService} from "../../services/auth.service";
+import {Subscription} from "rxjs";
 
 interface User {
   email: String
@@ -13,17 +14,21 @@ interface User {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy{
 
-  user: User = {
-    email: '',
-    password: ''
-  }
+  private streamSignUp$: Subscription | undefined
+  private streamSignIn$: Subscription | undefined
+
+  protected isAuthenticated: boolean = false
 
   constructor(
     private modalService: NgbModal,
     private auth: AuthService
     ) {}
+
+  ngOnInit() {
+    this.isAuthenticated = this.auth.isAuthenticated()
+  }
 
   openVerticallyCentered(content: any) {
 		this.modalService.open(content, { centered: true });
@@ -40,18 +45,32 @@ export class HeaderComponent {
       return console.log('Пароли не совпадают')
    }
 
-   this.auth.signUp(data)
+   this.streamSignUp$ = this.auth.signUp(data)
    .subscribe(response => {
-    console.log("Ответ от сервера: " + response);
+      console.log("Ответ от сервера: " + response);
+      this.modalService.dismissAll()
    })
+
   }
 
   // Авторизация
   onSubmitAuthorisation(form: NgForm) {
-    const data = {
+    const user: User = {
       email: form.control.get('email')?.value,
       password: form.control.get('password')?.value
     }
-    this.auth.signIn(data)
+    this.streamSignIn$ = this.auth.signIn(user).subscribe(token => {
+      this.auth.setToken(token.toString())
+      this.isAuthenticated = this.auth.isAuthenticated()
+      this.modalService.dismissAll()
+    })
+  }
+  onLogout() {
+    this.isAuthenticated = this.auth.logout()
+  }
+
+  ngOnDestroy() {
+    this.streamSignUp$?.unsubscribe()
+    this.streamSignIn$?.unsubscribe()
   }
 }

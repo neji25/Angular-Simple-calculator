@@ -1,18 +1,21 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Logo</a>
+  <a class="navbar-brand" routerLink="">Logo</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
+  <div class="collapse navbar-collapse">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#">Blog</a>
+        <a class="nav-link" routerLink="/blog">Blog</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" (click)="openVerticallyCentered(registration)">Register</a>
+        <a class="nav-link" *ngIf="isAuthenticated == false" href="javascript:void(0);" (click)="openVerticallyCentered(registration)">Register</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" (click)="openVerticallyCentered(authorisation)">Log In</a>
+        <a class="nav-link" *ngIf="isAuthenticated == false" href="javascript:void(0);" (click)="openVerticallyCentered(authorisation)">Log In</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="isAuthenticated == true" href="javascript:void(0);" (click)="onLogout()">Logout</a>
       </li>
     </ul>
   </div>
@@ -28,15 +31,15 @@
 		<form #FormReg="ngForm" (ngSubmit)="onSubmitRegistration(FormReg)">
       <div class="form-group">
         <label for="inputEmail">Email</label>
-        <input type="email" name="email" class="form-control" ngModel id="inputEmail" placeholder="Введите ваш email" required>
+        <input type="email" name="email" class="form-control" ngModel placeholder="Введите ваш email" required>
       </div>
       <div class="form-group mt-3">
         <label for="inputPassword">Пароль</label>
-        <input type="password" name="password" class="form-control" ngModel id="inputPassword" placeholder="Введите пароль" required>
+        <input type="password" name="password" class="form-control" ngModel placeholder="Введите пароль" required>
       </div>
       <div class="form-group mt-3">
         <label for="inputPassword">Повторите пароль</label>
-        <input type="password" name="rep_password" class="form-control" ngModel id="inputPassword" placeholder="Повторите пароль" required>
+        <input type="password" name="rep_password" class="form-control" ngModel placeholder="Повторите пароль" required>
       </div>
       <button type="submit" class="btn btn-primary mt-4" [disabled]="FormReg.invalid">Зарегистрироваться</button>
     </form>
